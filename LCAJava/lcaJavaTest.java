@@ -40,6 +40,71 @@ public class lcaJavaTest {
 		assertEquals("Test Lowest common ancestor of a 8 and 4",4,tree.functionLCA(8,4));
 
 	}
+	@Test 
+	public void testDag() {
+		/*				1--------
+		 * 			   /  \	     |
+		 *            2     3    |
+		 *            \    /     |
+		 *               4       |
+		 *              / \      | 
+		 *             5   6     |
+		 *             		\   /
+		 *               	  7
+		 */
+		
+		LCA graph = new LCA();
+		Node root= new Node(1);
+		Node nodeTwo= new Node(2);
+		Node nodeThree = new Node(3);
+		Node nodeFour = new Node(4);
+		Node nodeFive= new Node(5);
+		Node nodeSix = new Node(6);
+		Node nodeSeven = new Node(7);
+		
+		
+		graph.add2Graph(root);
+		graph.add2Graph(nodeTwo);
+		graph.add2Graph(nodeThree);
+		graph.add2Graph(nodeFour);
+		graph.add2Graph(nodeFive);
+		graph.add2Graph(nodeSix);
+		graph.add2Graph(nodeSeven);
+
+		
+		graph.addAncestors(root, nodeTwo);
+		graph.addAncestors(root, nodeThree);
+		graph.addAncestors(nodeTwo, nodeFour);
+		graph.addAncestors(nodeThree, nodeFour);
+		graph.addAncestors(nodeFour, nodeFive);
+		graph.addAncestors(nodeFour, nodeSix);
+		graph.addAncestors(nodeSix, nodeSeven);
+		graph.addAncestors(root, nodeSeven);
+
+
+		assertEquals(1, graph.functionLCADAG2(root, nodeTwo, nodeThree ));
+		assertEquals(1, graph.functionLCADAG2(root, root, root ));
+		assertEquals(4, graph.functionLCADAG2(root, nodeFive, nodeSix ));
+		assertEquals(3, graph.functionLCADAG2(root, nodeFour, nodeThree ));
+		assertEquals(1, graph.functionLCADAG2(root, root, nodeSeven ));
+
+
+
+
+
+	}
+	@Test
+	public void EmptyDAG() {
+		LCA graph = new LCA();
+		assertEquals("Test Lowest common ancestor of an empty tree",-1,graph.functionLCA(0,0));
+	}
+	public void oneNodeDAG() {
+		LCA graph = new LCA();
+		Node root= new Node(1);
+		graph.add2Graph(root);
+		assertEquals(1, graph.functionLCADAG2(root, root, root ));
+		
+	}
 	
 	@Test
 	public void testmissingLcaNode() {
